@@ -11,9 +11,10 @@ enum CardState {
     case faceDown
     case faceUp
     case matched
+    case disappeared
 }
 
-class Card {
+class Card: Equatable {
     let id: Int
     let emoji: String
     var state: CardState
@@ -24,18 +25,22 @@ class Card {
         self.state = .faceDown
     }
     
+    static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     func flip() {
         switch state {
         case .faceDown:
             state = .faceUp
         case .faceUp:
             state = .faceDown
-        case .matched:
+        case .matched, .disappeared:
             break
         }
     }
     
     func setMatched() {
-        state = .matched
+        state = .disappeared
     }
 }

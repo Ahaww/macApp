@@ -167,10 +167,24 @@ class ViewController: UIViewController {
     private func cardTapped(at index: Int) {
         memoryGame.selectCard(at: index)
         
-        // 更新卡片视图状态
-        let card = memoryGame.getCards()[index]
+        // 更新被点击的卡片视图状态
         let cardView = cardViews[index]
         cardView.flipWithAnimation()
+        
+        // 在每次点击后立即更新所有卡片视图状态，确保匹配的卡片能够立即消失
+        updateAllCardViews()
+    }
+    
+    // 更新所有卡片视图状态
+    private func updateAllCardViews() {
+        let cards = memoryGame.getCards()
+        for (index, cardView) in cardViews.enumerated() {
+            // 确保索引有效
+            if index < cards.count {
+                // 无论卡片状态如何，都更新视图状态
+                cardView.updateCardState()
+            }
+        }
     }
     
     private func showWinAlert() {
@@ -193,9 +207,14 @@ extension ViewController: MemoryGameDelegate {
     
     func didUpdateMoves(moves: Int) {
         movesLabel.text = "步数: \(moves)"
+        // 更新所有卡片视图状态，确保自动翻回的卡片正确显示
+        updateAllCardViews()
     }
     
     func didMatchCards() {
+        // 更新所有卡片视图状态，特别是匹配成功要消失的卡片
+        updateAllCardViews()
+        
         // 添加震动反馈
         AudioServicesPlaySystemSound(1519) // 系统成功音效
         

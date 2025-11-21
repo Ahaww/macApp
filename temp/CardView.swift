@@ -77,25 +77,53 @@ class CardView: UIView {
         case .faceDown:
             backView.alpha = 1
             emojiLabel.alpha = 0
+            transform = .identity
+            alpha = 1
         case .faceUp:
             backView.alpha = 0
             emojiLabel.alpha = 1
+            transform = .identity
+            alpha = 1
         case .matched:
             backView.alpha = 0
             emojiLabel.alpha = 1
             layer.borderColor = UIColor.systemGreen.cgColor
             backgroundColor = UIColor.systemGreen.withAlphaComponent(0.2)
+            transform = .identity
+            alpha = 1
+        case .disappeared:
+            // 直接设置为消失状态，不依赖动画
+            backView.alpha = 0
+            emojiLabel.alpha = 0
+            backgroundColor = .clear
+            layer.borderWidth = 0
+            transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            alpha = 0
         }
     }
     
     func flipWithAnimation() {
-        UIView.transition(with: self, duration: 0.6, options: .transitionFlipFromRight, animations: {
+        UIView.transition(with: self, duration:0.6, options: .transitionFlipFromRight, animations: {
             self.updateCardState()
         }, completion: { _ in
-            // 添加匹配成功的脉冲动画
+            // 如果是匹配状态，添加脉冲动画
             if self.card.state == .matched {
                 self.addMatchAnimation()
             }
+            // 如果是消失状态，添加消失动画
+            else if self.card.state == .disappeared {
+                self.disappearWithAnimation()
+            }
+        })
+    }
+    
+    func disappearWithAnimation() {
+        UIView.animate(withDuration: 1.2, animations: {
+            self.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            self.alpha = 0
+        }, completion: { _ in
+            // 动画完成后更新卡片状态
+            self.updateCardState()
         })
     }
     
