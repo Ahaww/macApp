@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("重新开始", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.backgroundColor = UIColor.systemBlue
+        button.backgroundColor = UIColor.systemTeal
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         return button

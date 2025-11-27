@@ -34,11 +34,11 @@ class CardView: UIView {
     private func setupView() {
         layer.cornerRadius = 12
         layer.borderWidth = 2
-        layer.borderColor = UIColor.systemBlue.cgColor
+        layer.borderColor = UIColor.systemTeal.cgColor
         clipsToBounds = true
         
         // 设置背面
-        backView.backgroundColor = UIColor.systemBlue
+        backView.backgroundColor = UIColor.systemTeal
         backView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(backView)
         
